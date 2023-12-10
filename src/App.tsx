@@ -45,6 +45,9 @@ function App() {
           <h1>Home Page</h1>
           <Loader size={100} />
         </TrackedRoute>
+        <TrackedRoute path="*" exact>
+          <h1>Not Found</h1>
+        </TrackedRoute>
       </Switch>
     </Router>
   )
