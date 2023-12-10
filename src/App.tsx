@@ -1,34 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {
+  Redirect,
+  Route,
+  RouteProps,
+  BrowserRouter as Router,
+  Switch,
+} from 'react-router-dom'
+import { Loader } from './components'
+interface CustomRouteProps extends RouteProps {
+  children?: React.ReactNode
+}
+
+const TrackedRoute = ({
+  children,
+  ...rest
+}: CustomRouteProps): React.ReactElement => {
+  return <Route {...rest}>{children}</Route>
+}
+
+const PrivateRoute = ({ children }: CustomRouteProps) => {
+  const AUTH = false
+  return AUTH ? children : <Redirect to="/login" />
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+      <Switch>
+        <TrackedRoute exact path={'/admin'}>
+          <PrivateRoute>
+            <h1>Hello World</h1>
+          </PrivateRoute>
+        </TrackedRoute>
+        <TrackedRoute exact path={'/contact'}>
+          <PrivateRoute>
+            <h1>Hello contact</h1>
+          </PrivateRoute>
+        </TrackedRoute>
+        <TrackedRoute exact path={'/login'}>
+          <h1>Login</h1>
+          <Loader />
+        </TrackedRoute>
+        <TrackedRoute exact path={'/'}>
+          <h1>Home Page</h1>
+          <Loader size={100} />
+        </TrackedRoute>
+        <TrackedRoute path="*" exact>
+          <h1>Not Found</h1>
+        </TrackedRoute>
+      </Switch>
+    </Router>
   )
 }
 
