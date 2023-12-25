@@ -7,6 +7,7 @@ import {
   Switch,
 } from 'react-router-dom'
 import { Loader } from './components'
+import NotFound from './pages/NotFound'
 interface CustomRouteProps extends RouteProps {
   children?: React.ReactNode
 }
@@ -46,7 +47,7 @@ function App() {
           <Loader size={100} />
         </TrackedRoute>
         <TrackedRoute path="*" exact>
-          <h1>Not Found</h1>
+          <NotFound />
         </TrackedRoute>
       </Switch>
     </Router>
